@@ -72,11 +72,17 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Nome</th>
-                        <th>Descrizione</th>
-                        <th>Parcheggio</th>
-                        <th>Distanza dal centro</th>
-                        <th>Voto</th>
+                        <?php 
+                        $Table_header = "";
+                        $keys_hotel = array_keys($hotels[0]);
+                        foreach($keys_hotel as $key){
+                        $Table_header .= "
+                            <th> " . ucfirst($key) . "</th>
+                        ";
+                        }                  
+                    
+                    echo $Table_header;
+                    ?>
                     </tr>
                 </thead>
 
@@ -89,7 +95,7 @@
 
                         foreach($hotels as $hotel){
                             if($hotel["parking"] == false && isset($_GET["parking"])) continue;
-                            if(isset($_GET["vote"]) && $hotel["vote"] < $_GET["vote"]) continue;
+                            if(isset($_GET["vote"]) && $_GET["vote"] != "" && $hotel["vote"] < $_GET["vote"]) continue;
                             //If filters are applied, non-compliant hotels are discarded
 
                             $parking_status = $hotel["parking"] ? "Disponibile" : "Non disponibile";
@@ -125,7 +131,7 @@
                 <div class="form-wrapper">
                 <label for="select_vote">Vedrai hotel a partire dal voto scelto</label>
                 <select name="vote" id="select-vote">
-                    <option value="false" disabled selected hidden >Filtra per voto</option>
+                    <option value="" disabled selected hidden >Filtra per voto</option>
                     <option value="5">5</option>
                     <option value="4">4</option>
                     <option value="3">3</option>
